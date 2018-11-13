@@ -14,11 +14,6 @@ import android.widget.Chronometer;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
-
 /**
  * Created by kylin25 on 2018/2/20.
  */
@@ -36,7 +31,7 @@ public class StopWatch extends RelativeLayout {
     final int MSG = 123;
     public StopWatch(Context context) {
         super(context);
-        Log.e(TAG,"StopWatch construtor");
+        Log.e(TAG,"StopWatch constructor");
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.stopwatch_layout,null);
         txtTime = (TextView)view.findViewById(R.id.textView);
@@ -50,12 +45,10 @@ public class StopWatch extends RelativeLayout {
                 if(!isStart){
                     updateTime = 0L;
                     startTime = System.currentTimeMillis();
-                    //handler.postDelayed(runnable,0);
                     handlerMsg.sendEmptyMessage(MSG);
                     isStart =true;
                     btnStart.setText(R.string.stop);
                 }else {
-                    //handler.removeCallbacks(runnable);
                     handlerMsg.removeMessages(MSG);
                     startTime = 0L;
                     updateTime = 0L;
@@ -75,34 +68,7 @@ public class StopWatch extends RelativeLayout {
         txtTime.setText("00:00:00.000");
         addView(view);
 
-        //
-        //startTime = System.currentTimeMillis();
-        //updateTime = 0L;
-
     }
-
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            Log.e(TAG,"runnable ");
-            Long endTime = System.currentTimeMillis() - startTime;
-
-            updateTime +=endTime;
-            long tmp =0;
-            long ms = updateTime %1000;
-            long sec = updateTime / 1000;
-            long hour = sec/3600;
-            tmp = sec % 3600;
-            long minute = tmp /60;
-            sec = tmp % 60;
-
-            String time = String.format("%02d:%02d:%02d:%03d",hour,minute,sec,ms);
-            txtTime.setText(time);
-
-            startTime = System.currentTimeMillis();
-            handler.postDelayed(this,0);
-        }
-    };
 
     Handler handlerMsg = new Handler(){
         @Override
